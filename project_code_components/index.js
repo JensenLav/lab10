@@ -68,8 +68,9 @@ const dbConfig = {
         
       const hash = await bcrypt.hash(req.body.password, 10);
 
-      const query = "INSERT INTO users (username, password) VALUES ($1, $2);";
+      const query = "INSERT INTO users (username, email,  password) VALUES ($1, $2, $3);";
       db.any(query, [req.body.username, hash])
+      db.any(query, [req.body.email, hash])
           .then(function (data) {
               res.redirect("/login");
           })
