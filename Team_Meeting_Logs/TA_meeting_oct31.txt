@@ -1,0 +1,16 @@
+TA Meeting Oct 31 6:30 PM
+Housing keeping:
+Commit code every day.
+Make sure to have our project board public
+
+Docker-compose issues
+	Roadblock to getting started
+	Maybe go to office hours to resolve issue
+
+Started on the login and register pages
+Have the basic file structure for the project.
+
+Things to do:
+	Get the docker compose file working, 
+	Create the tables (users, reviews, restaurants)
+	Start creating API routes.
