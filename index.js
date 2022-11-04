@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -34,9 +34,9 @@ const dbConfig = {
 
     app.use(
         session({
-          secret: process.env.SESSION_SECRET,
-          saveUninitialized: false,
-          resave: false,
+          secret: "XASDASDA",
+          saveUninitialized: true,
+          resave: true,
         })
       );
       
@@ -68,21 +68,21 @@ const dbConfig = {
 
     
         
-    app.post('/register', async (req, res) => {
+    // app.post('/register', async (req, res) => {
 
         
-      const hash = await bcrypt.hash(req.body.password, 10);
+    //   const hash = await bcrypt.hash(req.body.password, 10);
 
-      const query = "INSERT INTO users (username, password) VALUES ($1, $2);";
-      db.any(query, [req.body.username, hash])
-          .then(function (data) {
-              res.redirect("/login");
-          })
-          .catch(function (error) {
-              res.redirect("/register");
+    //   const query = "INSERT INTO users (username, password) VALUES ($1, $2);";
+    //   db.any(query, [req.body.username, hash])
+    //       .then(function (data) {
+    //           res.redirect("/login");
+    //       })
+    //       .catch(function (error) {
+    //           res.redirect("/register");
               
-          });
-    });
+    //       });
+    // });
 
 
     app.get('/login', (req, res) => {
@@ -91,37 +91,37 @@ const dbConfig = {
 
 
 
-    app.post('/login', (req, res) => {
+    // app.post('/login', (req, res) => {
         
         
-        const query = "SELECT password FROM users WHERE username = $1;";
-        db.one(query, [req.body.username])
-            .then(async function (user) {
-                const match = await bcrypt.compare(req.body.password, user.password);
+    //     const query = "SELECT password FROM users WHERE username = $1;";
+    //     db.one(query, [req.body.username])
+    //         .then(async function (user) {
+    //             const match = await bcrypt.compare(req.body.password, user.password);
     
-                if (match) {
-                    req.session.user = {
-                        api_key: process.env.API_KEY,
-                    };
-                    req.session.save();
+    //             if (match) {
+    //                 req.session.user = {
+    //                     api_key: process.env.API_KEY,
+    //                 };
+    //                 req.session.save();
   
-                    res.redirect("/discover");
+    //                 res.redirect("/discover");
 
 
 
-                  } else {
+    //               } else {
 
 
-                      throw Error("Incorrect username or password.");
-                  }
-              })
-            .catch(function (error) {
+    //                   throw Error("Incorrect username or password.");
+    //               }
+    //           })
+    //         .catch(function (error) {
 
-                res.redirect("/login");
+    //             res.redirect("/login");
                 
-            });
+    //         });
 
-    });
+    // });
 
 
 

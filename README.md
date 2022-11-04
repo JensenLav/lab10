@@ -12,7 +12,7 @@
     Front-End: EJS, Bootstrap
     Back-End: Docker, PostgreSQL, NodeJS
 ## Prerequisites to run the application - Any software that needs to be installed to run the application
-    Make sure that you have Docker, PostgreSQL and NodeJS installed.
+    Make sure that you have Docker, docker-compose, PostgreSQL and NodeJS installed.
 ## Instructions on how to run the application locally.
     Create a file named '.env'.
     Paste the following code:
