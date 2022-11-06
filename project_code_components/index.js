@@ -51,6 +51,13 @@ const dbConfig = {
 
 
 
+    //renders the home page
+    /*app.get ('/', (req, res) => {
+
+      res.render ('pages/home');
+
+    });*/
+
 
     app.get('/', (req, res) =>{
         res.redirect('/login'); //this will call the /anotherRoute route in the API
