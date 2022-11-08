@@ -127,6 +127,22 @@ const dbConfig = {
     });
 
 
+  // added recently ---------------------------------------------------------------------------------------------------
+  app.get('/postReview', (req, res) => {
+    res.render('pages/postReview',{});
+  });
+      
+  app.post('/postReview', async (req, res) => {
+    const query = "INSERT INTO reviews (rating,  review) VALUES ($1, $2);";
+    db.any(query, [req.body.rating, hash])
+    db.any(query, [req.body.review, hash])
+        .then(function (data) {
+            res.redirect("/home"); //  --------------------in future change to view review page
+        })
+        .catch(function (error) {
+            res.redirect("/postReview");   
+        });
+  });
 
       // Authentication Middleware.
       const auth = (req, res, next) => {
