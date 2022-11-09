@@ -125,8 +125,6 @@ const dbConfig = {
  
 app.get('/reviews', (req, res) => {
 
-  
-
   db.any("SELECT * FROM REVIEWS")
     .then((reviews) => {
       res.render("pages/reviews" ,{
@@ -140,12 +138,7 @@ app.get('/reviews', (req, res) => {
       });
     });
 
-  
 });   
-
-
-
-
 
 
 
