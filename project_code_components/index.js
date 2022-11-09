@@ -60,10 +60,12 @@ const dbConfig = {
 
 
     app.get('/', (req, res) =>{
-        res.redirect('/login'); //this will call the /anotherRoute route in the API
+        res.redirect('/AboutUs'); //this will call the /anotherRoute route in the API
     });
       
-   
+    app.get('/AboutUs', (req, res) => {
+      res.render('pages/AboutUs',{});
+  });
 
 
     app.get('/register', (req, res) => {
@@ -155,6 +157,7 @@ const dbConfig = {
 
       // Authentication Required
       app.use(auth);
+
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
