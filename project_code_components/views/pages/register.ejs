@@ -1,5 +1,15 @@
 <%- include ('../partials/header') %>
-    <section class="background-radial-gradient overflow-hidden">
+
+<% if (locals.message) { %>
+    <div
+      class="alert alert-<%- locals.taken ? 'danger' : 'success' %>"
+      role="alert"
+    >
+      <%= message %>
+    </div>
+    <% } %>
+
+<section class="background-radial-gradient overflow-hidden">
         <style>
         .background-radial-gradient {
             background-color: hsl(218, 41%, 15%);
@@ -63,7 +73,7 @@
     
             <div class="card bg-glass">
                 <div class="card-body px-4 py-5 px-md-5">
-                <form>
+                <form action = "/register" method = "POST">
                     <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row">
                     <div class="form-outline mb-4">
