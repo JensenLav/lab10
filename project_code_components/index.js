@@ -68,7 +68,7 @@ const dbConfig = {
       const hash = await bcrypt.hash(req.body.password, 10);
 
       
-                const query = "INSERT INTO users (username, email,  password) VALUES ($1, $2, $3);";
+                const query = "INSERT INTO users (email, username, password) VALUES ($1, $2, $3);";
 
                 db.any(query, [req.body.email, req.body.username, hash])
                     .then(function (data) {
@@ -102,7 +102,8 @@ const dbConfig = {
 
 
     app.get('/login', (req, res) => {
-        res.render('pages/login.ejs', {});
+      res.render('pages/login',{incorrect: false,
+        message: false,});
     });
 
 
@@ -119,18 +120,30 @@ const dbConfig = {
                     };
                     req.session.save();
   
+                    // this should be changed soon
                     res.redirect("/register");
 
 
                   } else {
 
+                    res.render('pages/login',{incorrect: true,
+                      message: "Incorrect username or password.",});
 
-                      throw Error("Incorrect username or password.");
+                      // throw Error("Incorrect username or password.");
                   }
               })
             .catch(function (error) {
 
-                res.redirect("/login");
+              if(error.message == 'No data returned from the query.'){
+                res.render('pages/login',{incorrect: true,
+                  message: "Incorrect username or password.",});
+              }else{
+                console.log(error)
+                res.send(error);
+                // res.redirect("/login");
+              }
+
+
                 
             });
 
