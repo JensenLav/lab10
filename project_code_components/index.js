@@ -146,7 +146,20 @@ app.get("/logout", (req, res) => {
 });
 
    
+app.get("/addResturant", (req,res) => {
+  req.render("pages/addResturant", {});
+});
 
+app.post("/addResturant", (req,res) => {
+  const query = "INSERT INTO resturants (name, reviews) VALUES ($1, $2);";
+  db.any(query, [req.body.name])
+  db.any(query, [req.body.reviews])
+      .then(function (data) {
+          res.redirect("/home");
+      })
+      .catch(function (error) {
+          res.redirect("/addResturant");
+      });
 
-
+});
   
