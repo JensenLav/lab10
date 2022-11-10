@@ -82,7 +82,7 @@ const dbConfig = {
                             message: "Email or username is taken",});
                         }
                         // console.log(error.message);
-                        res.redirect("/register");
+                        // res.redirect("/register");
                         
                     });
 
