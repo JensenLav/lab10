@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -74,30 +74,49 @@ const dbConfig = {
         
     app.post('/register', async (req, res) => {
 
-        
       const hash = await bcrypt.hash(req.body.password, 10);
 
-      const query = "INSERT INTO users (username, email,  password) VALUES ($1, $2, $3);";
-      db.any(query, [req.body.username, hash])
-      db.any(query, [req.body.email, hash])
-          .then(function (data) {
-              res.redirect("/login");
-          })
-          .catch(function (error) {
-              res.redirect("/register");
-              
-          });
+      
+                const query = "INSERT INTO users (email, username, password) VALUES ($1, $2, $3);";
+
+                db.any(query, [req.body.email, req.body.username, hash])
+                    .then(function (data) {
+                        res.redirect("/login");
+                    })
+                    .catch(function (error) {
+                        // res.send("reg error")
+
+                        if(error.message == 'duplicate key value violates unique constraint "users_pkey"'){
+                          res.render('pages/register',{taken: true,
+                            message: "Email or username is taken",});
+                        }
+                        // console.log(error.message);
+                        // res.redirect("/register");
+                        
+                    });
+
+           
+
+
+      
+      
+      
+      
+
+
+        
     });
+
+
 
 
     app.get('/login', (req, res) => {
-        res.render('pages/login.ejs', {});
+      res.render('pages/login',{incorrect: false,
+        message: false,});
     });
 
 
-
     app.post('/login', (req, res) => {
-        
         
         const query = "SELECT password FROM users WHERE username = $1;";
         db.one(query, [req.body.username])
@@ -110,19 +129,30 @@ const dbConfig = {
                     };
                     req.session.save();
   
+                    // this should be changed soon
                     res.redirect("/register");
-
 
 
                   } else {
 
+                    res.render('pages/login',{incorrect: true,
+                      message: "Incorrect username or password.",});
 
-                      throw Error("Incorrect username or password.");
+                      // throw Error("Incorrect username or password.");
                   }
               })
             .catch(function (error) {
 
-                res.redirect("/login");
+              if(error.message == 'No data returned from the query.'){
+                res.render('pages/login',{incorrect: true,
+                  message: "Incorrect username or password.",});
+              }else{
+                console.log(error)
+                res.send(error);
+                // res.redirect("/login");
+              }
+
+
                 
             });
 
