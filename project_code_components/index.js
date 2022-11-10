@@ -176,6 +176,30 @@ const dbConfig = {
         });
   });
 
+
+
+ 
+app.get('/reviews', (req, res) => {
+
+  db.any("SELECT * FROM REVIEWS")
+    .then((reviews) => {
+      res.render("pages/reviews" ,{
+        reviews
+      });
+    })
+    .catch((err) => {
+      res.send( {
+        error: true,
+        message: err.message,
+      });
+    });
+
+});   
+
+
+
+
+
       // Authentication Middleware.
       const auth = (req, res, next) => {
         if (!req.session.user) {
@@ -189,6 +213,7 @@ const dbConfig = {
       app.use(auth);
 
 
+
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login");
@@ -198,4 +223,4 @@ app.get("/logout", (req, res) => {
 
 
 
-  
+

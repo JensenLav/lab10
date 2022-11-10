@@ -1,5 +1,6 @@
 <%- include ('../partials/header') %>
 
+
     <% if (locals.message) { %>
         <div
         class="alert alert-<%- locals.incorrect? 'danger' : 'success' %>"
@@ -8,6 +9,11 @@
         <%= message %>
         </div>
         <% } %>
+
+
+
+
+<main>
 
     <section class="h-100 gradient-form" style="background-color: rgb(167, 198, 227);">
         <div class="container py-5 h-100">
@@ -75,5 +81,8 @@
         </div>
         </div>
     </section>
+
+</main>
+    
 
 <%- include ('../partials/footer') %>

@@ -1,5 +1,6 @@
 <%- include ('../partials/header') %>
 
+
 <% if (locals.message) { %>
     <div
       class="alert alert-<%- locals.taken ? 'danger' : 'success' %>"
@@ -9,7 +10,10 @@
     </div>
     <% } %>
 
-<section class="background-radial-gradient overflow-hidden">
+
+<main>
+    <section class="background-radial-gradient overflow-hidden">
+
         <style>
         .background-radial-gradient {
             background-color: hsl(218, 41%, 15%);
@@ -118,4 +122,10 @@
         </div>
         </div>
     </section>
+
+</main>    
+
+
+
+
 <%- include ('../partials/footer') %>
