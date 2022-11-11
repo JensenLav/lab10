@@ -1,0 +1,27 @@
+<%- include ('../partials/header') %>
+
+
+
+<main>
+    <section class="h-100 gradient-form" style="background-color: rgb(167, 198, 227);">
+
+        <% for(var i=0; i<reviews.length; i++) {%>
+            
+            <div class="card" style="width: 48rem;">
+                <h5 class="card-header"><%= reviews[i].username %></h5>
+                <div class="card-body">
+                  
+                  <p class="card-text"><%= reviews[i].review %></p>
+                  
+                </div>
+            </div>
+              
+        <% } %>
+
+    </section>
+
+</main>
+    
+
+<%- include ('../partials/footer') %>
+
