@@ -13,7 +13,7 @@ const dbConfig = {
     port: 5432,
     database: process.env.POSTGRES_DB,
     user: process.env.POSTGRES_USER,
-    email: process.env.POSTGRES_EMAIL,
+    // email: process.env.POSTGRES_EMAIL,
     password: process.env.POSTGRES_PASSWORD,
   };
   
@@ -66,7 +66,7 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/register', (req, res) => {
-    res.render('pages/register',{});
+    res.render('pages/register');
 });
    
 app.post('/register', async (req, res) => {
@@ -74,9 +74,10 @@ app.post('/register', async (req, res) => {
     const hash = await bcrypt.hash(req.body.password, 10);
 
     //insert into database
-    let query ="INSERT INTO users(username, email, password) VALUES($1,$2, $3)";
+    let query ="INSERT INTO users(username, password) VALUES($1,$2)";
+//     let query ="INSERT INTO users(username, email, password) VALUES($1,$2,$3)";
     db.any(query, [req.body.username, hash])
-    db.any(query, [req.body.email, hash])
+    // db.any(query, [req.body.email, hash])
     .then(()=> {
       res.redirect('/login')
     })
