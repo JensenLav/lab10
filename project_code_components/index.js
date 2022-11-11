@@ -53,11 +53,11 @@ const dbConfig = {
 
 
     //renders the home page
-    /*app.get ('/', (req, res) => {
+    app.get ('/', (req, res) => {
 
       res.render ('pages/home');
 
-    });*/
+    });
 
 
     app.get('/', (req, res) =>{
@@ -74,62 +74,76 @@ const dbConfig = {
     });
    
     app.post('/register', async (req, res) => {
-          //the logic goes here
-          const hash = await bcrypt.hash(req.body.password, 10);
-      
-          //insert into database
-          let query ="INSERT INTO users(username, password) VALUES($1,$2)";
-          db.any(query, [req.body.username, hash])
-          // db.any(query, [req.body.email, hash])
-          .then(()=> {
-            res.redirect('/login')
-          })
-          .catch(function (err) {
-            console.log(err);
-            res.redirect('/register')
-          });
-      });
 
+      const hash = await bcrypt.hash(req.body.password, 10);
+
+      
+                const query = "INSERT INTO users (email, username, password) VALUES ($1, $2, $3);";
+
+                db.any(query, [req.body.email, req.body.username, hash])
+                    .then(function (data) {
+                        res.redirect("/login");
+                    })
+                    .catch(function (error) {
+                        // res.send("reg error")
+
+                        if(error.message == 'duplicate key value violates unique constraint "users_pkey"'){
+                          res.render('pages/register',{taken: true,
+                            message: "Email or username is taken",});
+                        }
+                        // console.log(error.message);
+                        // res.redirect("/register");
+                        
+                    });
+
+
+            });
 
     app.get('/login', (req, res) => {
         res.render('pages/login.ejs', {});
     });
 
-    app.post('/login', async (req, res) => {
-          //the logic goes here
-      
-      console.log(req.body.username)
-        const query = "select * from users where username = $1";
-      
-          db.any(query, [req.body.username])
-          .then(async (data) => {
-            console.log(data)
-            if (data.length  === 0) {
-              return res.redirect('/login')
+    app.post('/login', (req, res) => {
+        
+      const query = "SELECT password FROM users WHERE username = $1;";
+      db.one(query, [req.body.username])
+          .then(async function (user) {
+              const match = await bcrypt.compare(req.body.password, user.password);
+  
+              if (match) {
+                  req.session.user = {
+                      api_key: process.env.API_KEY,
+                  };
+                  req.session.save();
+
+                  // this should be changed soon
+                  res.redirect("/register");
+
+
+                } else {
+
+                  res.render('pages/login',{incorrect: true,
+                    message: "Incorrect username or password.",});
+
+                    // throw Error("Incorrect username or password.");
+                }
+            })
+          .catch(function (error) {
+
+            if(error.message == 'No data returned from the query.'){
+              res.render('pages/login',{incorrect: true,
+                message: "Incorrect username or password.",});
+            }else{
+              console.log(error)
+              res.send(error);
+              // res.redirect("/login");
             }
-      
-            console.log(data)
-            const match = await bcrypt.compare(req.body.password, data[0].password); //await is explained in #8
-      
-      
-            if(!match){
-              return res.redirect('/register')
-            } else {
-              req.session.user = {
-                api_key: process.env.API_KEY,
-              };
-              req.session.save();
-              res.redirect('/AboutUs')
-            }
-      
-          })
-          .catch(e => {
-            console.log(e);
-            res.redirect('/register')  
-      //       throw Error ('Incorrect username or password.');
-          })
-      
-      });
+
+
+              
+          });
+
+  });
 
       // const auth = (req, res, next) => {
       //       if (!req.session.user) {
