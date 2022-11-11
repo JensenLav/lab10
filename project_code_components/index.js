@@ -184,9 +184,11 @@ app.get("/addResturant", (req,res) => {
 });
 
 app.post("/addResturant", (req,res) => {
-  const query = "INSERT INTO resturants (name, reviews) VALUES ($1, $2);";
+  const query = "INSERT INTO resturants (name, information, rating, reviews) VALUES ($1, $2, $3, $4);";
   db.any(query, [req.body.name])
   db.any(query, [req.body.reviews])
+  db.any(query, [req.body.information])
+  db.any(query, [req.body.rating])
       .then(function (data) {
           res.redirect("/home");
       })
