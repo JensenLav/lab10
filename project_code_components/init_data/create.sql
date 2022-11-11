@@ -7,11 +7,14 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS restaurants (
     id VARCHAR(50) PRIMARY KEY,
     name VARCHAR(50),
+    information VARCHAR(200),
+    rating DECIMAL NOT NULL, 
     reviews VARCHAR(50)
 
 );
 
 CREATE TABLE IF NOT EXISTS reviews( 
-    username VARCHAR(50) PRIMARY KEY,
-    review VARCHAR(50)
+    username VARCHAR(100) PRIMARY KEY,
+    review VARCHAR(400),
+    rating DECIMAL NOT NULL
 );
