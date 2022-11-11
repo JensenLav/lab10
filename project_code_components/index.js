@@ -158,9 +158,3 @@ app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login");
 });
-
-   
-
-
-
-  
