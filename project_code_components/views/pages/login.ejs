@@ -1,4 +1,20 @@
 <%- include ('../partials/header') %>
+
+
+    <% if (locals.message) { %>
+        <div
+        class="alert alert-<%- locals.incorrect? 'danger' : 'success' %>"
+        role="alert"
+        >
+        <%= message %>
+        </div>
+        <% } %>
+
+
+
+
+<main>
+
     <section class="h-100 gradient-form" style="background-color: rgb(167, 198, 227);">
         <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -14,7 +30,7 @@
                         <h4 class="mt-1 mb-5 pb-1">Food Finder</h4>
                     </div>
     
-                    <form>
+                    <form action = "/login" method = "POST">
                         <p>Please login to your account</p>
     
                         <div class="form-outline mb-4">
@@ -65,5 +81,8 @@
         </div>
         </div>
     </section>
+
+</main>
+    
 
 <%- include ('../partials/footer') %>
