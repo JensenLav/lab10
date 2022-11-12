@@ -87,6 +87,9 @@
     <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
     <div class="row gx-lg-5 align-items-center mb-5">
 
+
+        
+
             <!-- insert review page visual? or maybe corresponding restaurant page -->
             <!-- <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
 
@@ -99,21 +102,26 @@
         <!-- This is Where you put review insert block-->
         <div class="card bg-glass">
             <div class="card-body px-4 py-5 px-md-5">
-            <form>
+            <form action = "\postReview" method = "POST">
                 <!-- Rating Select/Input -->
                 <div class="form-outline mb-4">
                     <!-- <div class="wrapper"> -->
                         <label for="rating" class="form-label">Select your rating</label>
                         <div class="wrapper">
-                            <input type="radio" name="rating" id="rate1" value="1" class="form-control">
+
+                            <input type="radio" name="rating" id="rate1" value=1 class="form-control">
                                 <label for="rate1"></label>
-                            <input type="radio" name="rating" id="rate2" value="2" class="form-control">
+
+                            <input type="radio" name="rating" id="rate2" value=2 class="form-control">
                                 <label for="rate2"></label>
-                            <input type="radio" name="rating" id="rate3" value="3" class="form-control">
+
+                            <input type="radio" name="rating" id="rate3" value=3 class="form-control">
                                 <label for="rate3"></label>
-                            <input type="radio" name="rating" id="rate4" value="4" class="form-control">
+
+                            <input type="radio" name="rating" id="rate4" value=4 class="form-control">
                                 <label for="rate4"></label>
-                            <input type="radio" name="rating" id="rate5" value="5" class="form-control">
+
+                            <input type="radio" name="rating" id="rate5" value=5 class="form-control">
                                 <label for="rate5"></label>
                         </div>
                     <!-- </div> -->
@@ -122,12 +130,13 @@
                 <!-- Review input -->
                 <div class="form-outline mb-4">
                     <label for="review" class="form-label">Your Review</label>
-                    <textarea class="form-control" id="review" rows="7"></textarea>
+                    <textarea class="form-control" name ="review" id="review" rows="7"></textarea>
                 </div>
 
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">Post Review</button>
             </form>
+
             </div>
         </div>
         </div>

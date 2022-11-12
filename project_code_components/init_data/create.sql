@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS restaurants (
 );
 
 CREATE TABLE IF NOT EXISTS reviews( 
-    username VARCHAR(100) PRIMARY KEY,
+    username VARCHAR(100),
     review VARCHAR(400),
-    rating DECIMAL NOT NULL
+    rating DECIMAL NOT NULL,
+    lat DECIMAL NOT NULL,
+    long DECIMAL NOT NULL
 );
