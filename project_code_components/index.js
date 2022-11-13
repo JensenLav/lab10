@@ -180,15 +180,15 @@ app.get("/logout", (req, res) => {
 
    
 app.get("/addResturant", (req,res) => {
-  req.render("pages/addResturant", {});
+  res.render("pages/addResturant", {});
 });
 
 app.post("/addResturant", (req,res) => {
   const query = "INSERT INTO resturants (name, information, rating, reviews) VALUES ($1, $2, $3, $4);";
-  db.any(query, [req.body.name])
-  db.any(query, [req.body.reviews])
-  db.any(query, [req.body.information])
-  db.any(query, [req.body.rating])
+  db.any(query, [req.body.name, hash])
+  db.any(query, [req.body.reviews, hash])
+  db.any(query, [req.body.information, hash])
+  db.any(query, [req.body.rating, hash])
       .then(function (data) {
           res.redirect("/home");
       })
