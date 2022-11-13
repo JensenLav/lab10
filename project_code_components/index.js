@@ -10,11 +10,7 @@ const NodeGeocoder = require('node-geocoder');
 
 const options = {
   provider: 'google',
-
-  // Optional depending on the providers
-  // fetch: customFetchImplementation,
-  // apiKey: 'YOUR_API_KEY', // for Mapquest, OpenCage, Google Premier
-  // formatter: null // 'gpx', 'string', ...
+  apiKey: process.env.API_KEY
 };
 const geocoder = NodeGeocoder(options);
 
@@ -223,11 +219,6 @@ const dbConfig = {
       app.post('/postReview', async (req, res) => {
         const query = "INSERT INTO reviews (username, review, rating) VALUES ($1, $2, $3);";
         
-        console.log(req.body.rate1);
-        console.log(req.body.rate2);
-        console.log(req.body.rate3);
-        console.log(req.body.rate4);
-        console.log(req.body.rate5);
 
         db.any(query, [req.session.user, req.body.review, 5])
             .then(function (data) {
@@ -240,6 +231,54 @@ const dbConfig = {
                 // res.redirect("/postReview");   
             });
       });
+
+
+
+
+
+      
+      app.get('/add_restaurants', (req, res) => {
+
+        db.any("SELECT * FROM RESTAURANTS")
+          .then((restaurants) => {
+            res.render("pages/add_restaurants" ,{
+              restaurants,
+              json: JSON.stringify(restaurants)
+            });
+          })
+          .catch((err) => {
+            res.send( {
+              error: true,
+              message: err.message,
+            });
+          }); 
+      
+      }); 
+
+
+      app.post('/add_restaurants', async (req, res) => {
+        console.log(process.env.API_KEY); 
+        const geocode_info = await geocoder.geocode(req.body.address);
+       
+
+        try{
+            const query = "INSERT INTO restaurants (name, address, lat, long) VALUES ($1, $2, $3, $4);";
+            db.any(query, [req.body.name, geocode_info[0].formattedAddress, geocode_info[0].latitude, geocode_info[0].longitude])
+              .then(function (data) {
+                  res.redirect("add_restaurants");
+              })
+              .catch(function (error) {
+                res.redirect("/add_restaurants");
+          // this should redirect with error message
+              });
+        } catch {
+          res.redirect("/add_restaurants");
+          // this should redirect with error message
+        }
+        
+      });
+
+      
 
 
 app.get("/logout", (req, res) => {
