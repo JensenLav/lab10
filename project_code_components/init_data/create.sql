@@ -17,5 +17,6 @@ CREATE TABLE IF NOT EXISTS reviews(
     review VARCHAR(400),
     rating DECIMAL NOT NULL,
     lat DECIMAL NOT NULL,
-    long DECIMAL NOT NULL
+    long DECIMAL NOT NULL,
+    time BIGINT
 );

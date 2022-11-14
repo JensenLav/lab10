@@ -96,7 +96,7 @@
         <% for(var i=0; i<reviews.length; i++) {%>
             
             <div class="card" style="width: 48rem;">
-                <h5 class="card-header"><%= reviews[i].username %></h5>
+                <h5 class="card-header"><%= reviews[i].username %> : <%= new Date(Number(reviews[i].time)) %> </h5>
                 <div class="card-body">
                   
                   <p class="card-text"><%= reviews[i].review %></p>
