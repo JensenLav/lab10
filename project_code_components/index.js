@@ -51,9 +51,21 @@ app.listen(3000);
 console.log('Server is listening on port 3000');
 
 //renders the home page
-app.get ('/', (req, res) => {
+app.get ('/home', (req, res) => {
 
   res.render ('pages/home');
+
+});
+
+app.get ('/addResturant', (req, res) => {
+
+  res.render ('pages/addResturant');
+
+});
+
+app.get ('/postReview', (req, res) => {
+
+  res.render ('pages/postReview');
 
 });
 
@@ -70,45 +82,29 @@ app.get('/register', (req, res) => {
 });
    
 app.post('/register', async (req, res) => {
-      //the logic goes here
-    const hash = await bcrypt.hash(req.body.password, 10);
-
-    //insert into database
-    let query ="INSERT INTO users(username, password) VALUES($1,$2)";
-//     let query ="INSERT INTO users(username, email, password) VALUES($1,$2,$3)";
-    db.any(query, [req.body.username, hash])
-    // db.any(query, [req.body.email, hash])
-    .then(()=> {
-      res.redirect('/login')
-    })
-    .catch(function (err) {
-      console.log(err);
-      res.redirect('/register')
-    });
-});
-    app.post('/register', async (req, res) => {
       //the logic goes here
-      const hash = await bcrypt.hash(req.body.password, 10);
-      
-      //insert into database
-      let query ="INSERT INTO users(username, password) VALUES($1,$2)";
-      db.any(query, [req.body.username, hash])
-          // db.any(query, [req.body.email, hash])
-      .then(()=> {
+    const hash = await bcrypt.hash(req.body.password, 10);
+
+    //insert into database
+    let query ="INSERT INTO users(username, password) VALUES($1,$2)";
+//     let query ="INSERT INTO users(username, email, password) VALUES($1,$2,$3)";
+    db.any(query, [req.body.username, hash])
+    // db.any(query, [req.body.email, hash])
+    .then(()=> {
       res.redirect('/login')
-      })
-      .catch(function (err) {
+    })
+    .catch(function (err) {
       console.log(err);
       res.redirect('/register')
-      });
-      });
+    });
+});
 
 app.get('/login', (req, res) => {
     res.render('pages/login.ejs', {});
 });
 
 app.post('/login', async (req, res) => {
-  //the logic goes here
+      //the logic goes here
   
   console.log(req.body.username)
     const query = "select * from users where username = $1";
@@ -121,7 +117,7 @@ app.post('/login', async (req, res) => {
         }
   
         console.log(data)
-    const match = await bcrypt.compare(req.body.password, data[0].password); //await is explained in #8
+        const match = await bcrypt.compare(req.body.password, data[0].password); //await is explained in #8
   
   
         if(!match){
@@ -131,26 +127,26 @@ app.post('/login', async (req, res) => {
             api_key: process.env.API_KEY,
           };
           req.session.save();
-    res.redirect('/AboutUs')
+          res.redirect('/AboutUs')
         }
   
       })
       .catch(e => {
         console.log(e);
-  res.redirect('/register')  
+        res.redirect('/register')  
       })
   
   });
 
 const auth = (req, res, next) => {
-if (!req.session.user) {
-// Default to register page.
-return res.redirect('/register');
-}
-next();
+    if (!req.session.user) {
+      // Default to register page.
+      return res.redirect('/register');
+    }
+    next();
 };
-  
-  // Authentication Required
+    
+    // Authentication Required
 app.use(auth);
 
 //post review
@@ -163,7 +159,7 @@ app.post('/postReview', async (req, res) => {
   db.any(query, [req.body.rating, hash])
   db.any(query, [req.body.review, hash])
       .then(function (data) {
-          res.redirect("/home"); //  --------------------in future change to view review page
+          res.redirect("/reviews"); //  --------------------in future change to view review page
       })
       .catch(function (error) {
           res.redirect("/postReview");   
