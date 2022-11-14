@@ -159,7 +159,7 @@ app.post('/postReview', async (req, res) => {
   db.any(query, [req.body.rating, hash])
   db.any(query, [req.body.review, hash])
       .then(function (data) {
-          res.redirect("/reviews"); //  --------------------in future change to view review page
+          res.redirect("/reviews"); //  currently not sending data to datafile ... 
       })
       .catch(function (error) {
           res.redirect("/postReview");   
