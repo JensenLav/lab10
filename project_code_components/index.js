@@ -51,11 +51,23 @@ app.listen(3000);
 console.log('Server is listening on port 3000');
 
 //renders the home page
-/*app.get ('/', (req, res) => {
+app.get ('/home', (req, res) => {
 
   res.render ('pages/home');
 
-});*/
+});
+
+app.get ('/addResturant', (req, res) => {
+
+  res.render ('pages/addResturant');
+
+});
+
+app.get ('/postReview', (req, res) => {
+
+  res.render ('pages/postReview');
+
+});
 
 app.get('/AboutUs', (req, res) => {
   res.render('pages/AboutUs');
