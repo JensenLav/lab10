@@ -1,0 +1,5 @@
+* Login and registration page should be up and running 
+* Front end for the home page (and the nav bar) should be completely done
+* Post reviews route should be partially completed 
+* View restaurant information (frontend part) should be partially done
+* Post reviews should be partially done

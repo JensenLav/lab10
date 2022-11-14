@@ -1,4 +1,0 @@
-* Login and registration page should be up and running 
-* Home page should be completely done (fetching reviews from backend and displaying on the front end)
-* Post reviews route should be partially completed 
-* View restaurant information (backend part) should be partially done
