@@ -5,9 +5,12 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const axios = require('axios');
+const querystring = require('querystring');
+
 const {
   query
 } = require('express');
+
 const NodeGeocoder = require('node-geocoder');
 
 const options = {
@@ -173,7 +176,7 @@ app.post('/login', (req, res) => {
 const auth = (req, res, next) => {
     if (!req.session.user) {
       // Default to register page.
-      return res.redirect('/register');
+      return res.redirect('/reviews');
     }
     next();
 };
@@ -215,7 +218,7 @@ app.get('/reviews', (req, res) => {
       
       res.render("pages/reviews", {
         reviews,
-        reviews_json: JSON.stringify(reviews)
+        reviews_json: JSON.stringify(reviews),
       });
     })
     .catch((err) => {
@@ -229,7 +232,7 @@ app.get('/reviews', (req, res) => {
 
 
 app.get('/postReview', (req, res) => {
-  res.render('pages/postReview', {});
+  res.render('pages/postReview', {message: req.query.message});
 });
 
 app.post('/postReview', async (req, res) => {
@@ -254,9 +257,11 @@ app.post('/postReview', async (req, res) => {
     }).catch(
       // this should return if the restaurant name is not found.
       function (error) {
-        console.log(error);
-        res.send(error);
-        // res.redirect("/postReview");   
+        const restaurant_not_found = querystring.stringify({
+          "message":"Restaurant not found"
+        });
+    
+        res.redirect("/postReview?" + restaurant_not_found);
       }
     );
 
@@ -274,7 +279,8 @@ app.get('/addRestaurants', (req, res) => {
     .then((restaurants) => {
       res.render("pages/addRestaurants", {
         restaurants,
-        json: JSON.stringify(restaurants)
+        json: JSON.stringify(restaurants),
+        message: req.query.message
       });
     })
     .catch((err) => {
@@ -299,11 +305,18 @@ app.post('/addRestaurants', async (req, res) => {
         res.redirect("/addRestaurants");
       })
       .catch(function (error) {
-        res.redirect("/addRestaurants");
-        // this should redirect with error message
+        const error_message = querystring.stringify({
+          "message":"Something went wrong"
+        });
+    
+        res.redirect("/addRestaurants?" + error_message);
       });
   } catch {
-    res.redirect("/addRestaurants");
+    const address_not_found = querystring.stringify({
+      "message":"Address not found"
+    });
+
+    res.redirect("/addRestaurants?" + address_not_found);
     // this should redirect with error message
   }
 

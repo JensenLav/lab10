@@ -2,152 +2,177 @@
 <%- include ('../partials/header') %>
 <%- include('../partials/header-navbar')%>
 
-<section class="background-radial-gradient overflow-hidden">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>
-    .background-radial-gradient {
-        background-color: hsl(218, 41%, 15%);
-        background-image: radial-gradient(650px circle at 0% 0%,
-            hsl(218, 41%, 35%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%),
-        radial-gradient(1250px circle at 100% 100%,
-            hsl(218, 41%, 45%) 15%,
-            hsl(218, 41%, 30%) 35%,
-            hsl(218, 41%, 20%) 75%,
-            hsl(218, 41%, 19%) 80%,
-            transparent 100%);
-    }
+<% if (locals.message) { %>
+    <div
+      class="alert alert-<%- 'danger' %>"
+      role="alert"
+    >
+      <%= message %>
+    </div>
+    <% } %>
 
-    #radius-shape-1 {
-        height: 220px;
-        width: 220px;
-        top: -60px;
-        left: -130px;
-        background: radial-gradient(#44006b, #ad1fff);
-        overflow: hidden;
-    }
 
-    #radius-shape-2 {
-        border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-        bottom: -60px;
-        right: -110px;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(#44006b, #ad1fff);
-        overflow: hidden;
-    }
 
-    .bg-glass {
-        background-color: hsla(0, 0%, 100%, 0.9) !important;
-        backdrop-filter: saturate(200%) blur(25px);
-    }
+
+
+<main>
+    <section class="background-radial-gradient overflow-hidden">
+
+
     
-    .wrapper {
-        position: absolute;
-        top: 12%;
-        left: 60%;
-        transform: translate(-50%, -50%) rotateY(180deg);
-        display: flex;
-    }
-    .wrapper input {
-        display: none;
-    }
-    .wrapper label {
-        display: block;
-        cursor: pointer;
-        width: 50px;
-    }
-    .wrapper label:before {
-        content: '★';
-        position: relative;
-        display: block;
-        font-size: 50px;
-        color: black;
-    }
-    .wrapper label:after {
-        content: '★';
-        position: absolute;
-        display: block;
-        font-size: 50px;
-        color: rgb(255, 52, 29);
-        top: 0;
-        opacity: 0;
-        transition: .6s;
-    }
-    .wrapper label:hover:after, .wrapper label:hover~label:after, .wrapper input:checked~label:after {
-	opacity: 1;
-    }
-    </style>
 
-    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-    <div class="row gx-lg-5 align-items-center mb-5">
-
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+        <style>
+        .background-radial-gradient {
+            background-color: hsl(218, 41%, 15%);
+            background-image: radial-gradient(650px circle at 0% 0%,
+                hsl(218, 41%, 35%) 15%,
+                hsl(218, 41%, 30%) 35%,
+                hsl(218, 41%, 20%) 75%,
+                hsl(218, 41%, 19%) 80%,
+                transparent 100%),
+            radial-gradient(1250px circle at 100% 100%,
+                hsl(218, 41%, 45%) 15%,
+                hsl(218, 41%, 30%) 35%,
+                hsl(218, 41%, 20%) 75%,
+                hsl(218, 41%, 19%) 80%,
+                transparent 100%);
+        }
+    
+        #radius-shape-1 {
+            height: 220px;
+            width: 220px;
+            top: -60px;
+            left: -130px;
+            background: radial-gradient(#44006b, #ad1fff);
+            overflow: hidden;
+        }
+    
+        #radius-shape-2 {
+            border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+            bottom: -60px;
+            right: -110px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(#44006b, #ad1fff);
+            overflow: hidden;
+        }
+    
+        .bg-glass {
+            background-color: hsla(0, 0%, 100%, 0.9) !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
         
-
-            <!-- insert review page visual? or maybe corresponding restaurant page -->
-            <!-- <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-
-            </div> -->
-
-        <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-
-        <!-- This is Where you put review insert block-->
-        <div class="card bg-glass">
-            <div class="card-body px-4 py-5 px-md-5">
-            <form action = "\postReview" method = "POST">
-                <!-- Rating Select/Input -->
-                <div class="form-outline mb-4">
-                    <!-- <div class="wrapper"> -->
-                        <label for="rating" class="form-label">Select your rating</label>
-                        <div class="wrapper">
-
-                            <input type="radio" name="rating" id="rate1" value=1 class="form-control">
-                                <label for="rate1"></label>
-
-                            <input type="radio" name="rating" id="rate2" value=2 class="form-control">
-                                <label for="rate2"></label>
-
-                            <input type="radio" name="rating" id="rate3" value=3 class="form-control">
-                                <label for="rate3"></label>
-
-                            <input type="radio" name="rating" id="rate4" value=4 class="form-control">
-                                <label for="rate4"></label>
-
-                            <input type="radio" name="rating" id="rate5" value=5 class="form-control">
-                                <label for="rate5"></label>
-                        </div>
-                    <!-- </div> -->
+        .wrapper {
+            position: absolute;
+            top: 12%;
+            left: 60%;
+            transform: translate(-50%, -50%) rotateY(180deg);
+            display: flex;
+        }
+        .wrapper input {
+            display: none;
+        }
+        .wrapper label {
+            display: block;
+            cursor: pointer;
+            width: 50px;
+        }
+        .wrapper label:before {
+            content: '★';
+            position: relative;
+            display: block;
+            font-size: 50px;
+            color: black;
+        }
+        .wrapper label:after {
+            content: '★';
+            position: absolute;
+            display: block;
+            font-size: 50px;
+            color: rgb(255, 52, 29);
+            top: 0;
+            opacity: 0;
+            transition: .6s;
+        }
+        .wrapper label:hover:after, .wrapper label:hover~label:after, .wrapper input:checked~label:after {
+        opacity: 1;
+        }
+        </style>
+    
+        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row gx-lg-5 align-items-center mb-5">
+    
+    
+            
+    
+                <!-- insert review page visual? or maybe corresponding restaurant page -->
+                <!-- <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+    
+                </div> -->
+    
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+            <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+            <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+    
+            <!-- This is Where you put review insert block-->
+            <div class="card bg-glass">
+                <div class="card-body px-4 py-5 px-md-5">
+                <form action = "\postReview" method = "POST">
+                    <!-- Rating Select/Input -->
+                    <div class="form-outline mb-4">
+                        <!-- <div class="wrapper"> -->
+                            <label for="rating" class="form-label">Select your rating</label>
+                            <div class="wrapper">
+    
+                                <input type="radio" name="rating" id="rate1" value=1 class="form-control">
+                                    <label for="rate1"></label>
+    
+                                <input type="radio" name="rating" id="rate2" value=2 class="form-control">
+                                    <label for="rate2"></label>
+    
+                                <input type="radio" name="rating" id="rate3" value=3 class="form-control">
+                                    <label for="rate3"></label>
+    
+                                <input type="radio" name="rating" id="rate4" value=4 class="form-control">
+                                    <label for="rate4"></label>
+    
+                                <input type="radio" name="rating" id="rate5" value=5 class="form-control">
+                                    <label for="rate5"></label>
+                            </div>
+                        <!-- </div> -->
+                    </div>
+    
+    
+                    <div class="form-outline mb-4">
+                        <label for="restaurant" class="form-label">Restaurant name</label>
+                        <input class="form-control" name ="restaurant" id="restaurant">
+                    </div>
+    
+                    <!-- Review input -->
+                    <div class="form-outline mb-4">
+                        <label for="review" class="form-label">Your Review</label>
+                        <textarea class="form-control" name ="review" id="review" rows="7"></textarea>
+                    </div>
+    
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Post Review</button>
+                </form>
+    
                 </div>
-
-
-                <div class="form-outline mb-4">
-                    <label for="restaurant" class="form-label">Restaurant name</label>
-                    <input class="form-control" name ="restaurant" id="restaurant">
-                </div>
-
-                <!-- Review input -->
-                <div class="form-outline mb-4">
-                    <label for="review" class="form-label">Your Review</label>
-                    <textarea class="form-control" name ="review" id="review" rows="7"></textarea>
-                </div>
-
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">Post Review</button>
-            </form>
-
+            </div>
             </div>
         </div>
         </div>
-    </div>
-    </div>
-</section>
+    </section>
+
+
+</main>
+
+
+
 
 <%- include('../partials/footer')%>
