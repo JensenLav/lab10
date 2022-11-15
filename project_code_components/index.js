@@ -231,9 +231,9 @@ app.post('/postReview', async (req, res) => {
     .then(function (coordinates) {
 
       let time = new Date().getTime();
-      const query = "INSERT INTO reviews (username, review, rating, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6);";
+      const query = "INSERT INTO reviews (username, review, rating, restaurant, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6, $7);";
 
-      db.any(query, [req.session.user, req.body.review, 5, coordinates[0].lat, coordinates[0].long, time])
+      db.any(query, [req.session.user, req.body.review, 5, req.body.restaurant, coordinates[0].lat, coordinates[0].long, time])
         .then(function (data) {
 
           res.redirect("/reviews"); //  --------------------in future change to view review page

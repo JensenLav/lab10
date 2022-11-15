@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS reviews(
     username VARCHAR(100),
     review VARCHAR(400),
     rating DECIMAL NOT NULL,
+    restaurant VARCHAR(100), 
     lat DECIMAL NOT NULL,
     long DECIMAL NOT NULL,
     time BIGINT

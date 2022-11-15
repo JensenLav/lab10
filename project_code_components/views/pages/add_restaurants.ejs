@@ -80,10 +80,22 @@
 
             var map = L.map('map').setView([0, 0], 2);
             
+            var greenIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              });
+
+
         
             for(var i = 0; i < restaurants.length; i++){
-                L.marker([parseFloat(restaurants[i].lat), parseFloat(restaurants[i].long)]).addTo(map)
-                .bindPopup(restaurants[i].name, restaurants[i].address)
+
+                let message = String('<b>' + restaurants[i].name + '</b>' + '<br>' + restaurants[i].address);
+                L.marker([parseFloat(restaurants[i].lat), parseFloat(restaurants[i].long)], {icon: greenIcon}).addTo(map)
+                .bindPopup(message)
                 .openPopup();
             }
             
@@ -98,23 +110,81 @@
         </script>
 
         <body>
-            <form action = "\add_restaurants" method = "POST">
-                <div class="form-group">
-                    <label for="name">Restaurant Name</label>
-                    <input type="text" class="form-control"  name = "name" id="name" placeholder="restaurant name">
-                  </div>
-                  <div class="form-group">
-                    <label for="address">Restaurant Address</label>
-                    <input class="form-control" name = "address" id="address" placeholder="address">
-                  </div>
+
+            <div class = "col d-flex justify-content-center" >
 
 
-                    <button type="submit" class="btn btn-primary btn-block mb-4">
-                        Add
-                    </button>
+
+             <div class="card bg-glass" style="width: 48rem;">
+                <div class="card-body px-4 py-5 px-md-5">
+
+                    <h5 > Add a restaurant! </h5>
+
+                    <form action = "\add_restaurants" method = "POST">
+
+                        <div class="form-group">
+                            <label for="name">Restaurant Name</label>
+                            <input type="text" class="form-control"  name = "name" id="name" placeholder="restaurant name">
+                          </div>
+                          <div class="form-group">
+                            <label for="address">Restaurant Address</label>
+                            <input class="form-control" name = "address" id="address" placeholder="address">
+                          </div>
+        
+        
+                            <button type="submit" class="btn btn-primary btn-block mb-4">
+                                Add
+                            </button>
+                          
+                    </form>
+
+                </div>
+            </div>
+
+
+
+
+
+        
+
+
+            </div>
+
+            <% for(var i=0; i<restaurants.length; i++) {%>
+                <div class = "col d-flex justify-content-center" >
+
+
+
+
+
+                <div class="card" style="width: 48rem;">
+                    <h5 class="card-header"><%= restaurants[i].name %> </h5>
+                    <div class="card-body">
+                      
+                      <p class="card-text"><%= restaurants[i].address %></p>
+                      
+                    </div>
+                </div>
+
+            </div>
                   
-                
-            </form>
+            <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
         </body>
 
