@@ -1,17 +1,119 @@
 <%- include ('../partials/header') %>
-
+<%- include('../partials/header-navbar')%>
 
 
 <main>
-    <section class="h-100 gradient-form" style="background-color: rgb(167, 198, 227);">
+    <section class="background-radial-gradient overflow-hidden">
+
+
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
+        integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
+        crossorigin=""/>
+        
+        <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
+        integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
+        crossorigin=""></script>
+
+        <style>
+            #map { height: 500px; margin: 20px; border-radius: 10px; }
+
+        </style>
+
+        <style>
+            .background-radial-gradient {
+                background-color: hsl(218, 41%, 15%);
+                background-image: radial-gradient(650px circle at 0% 0%,
+                    hsl(218, 41%, 35%) 15%,
+                    hsl(218, 41%, 30%) 35%,
+                    hsl(218, 41%, 20%) 75%,
+                    hsl(218, 41%, 19%) 80%,
+                    transparent 100%),
+                radial-gradient(1250px circle at 100% 100%,
+                    hsl(218, 41%, 45%) 15%,
+                    hsl(218, 41%, 30%) 35%,
+                    hsl(218, 41%, 20%) 75%,
+                    hsl(218, 41%, 19%) 80%,
+                    transparent 100%);
+            }
+        
+            #radius-shape-1 {
+                height: 220px;
+                width: 220px;
+                top: -60px;
+                left: -130px;
+                background: radial-gradient(#44006b, #ad1fff);
+                overflow: hidden;
+            }
+        
+            #radius-shape-2 {
+                border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+                bottom: -60px;
+                right: -110px;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(#44006b, #ad1fff);
+                overflow: hidden;
+            }
+        
+            .bg-glass {
+                background-color: hsla(0, 0%, 100%, 0.9) !important;
+                backdrop-filter: saturate(200%) blur(25px);
+            }
+
+
+
+            .timestamp {
+                font-family: "Lucida Console", "Courier New", monospace;
+            }
+
+            .rating {
+                font-family: "Lucida Console", "Courier New", monospace;
+                font-weight: bold;
+                color: green;
+            }
+            </style>
+
+        <div id="map"></div>
+
+        <script>
+
+            var x = JSON.parse('<%- reviews_json %>');
+
+            var map = L.map('map').setView([0, 0], 2);
+            
+        
+            for(var i = 0; i < x.length; i++){
+                let message = x[i].review + "<br>" + "-" + x[i].username;
+                L.marker([parseFloat(x[i].lat), parseFloat(x[i].long)]).addTo(map)
+                .bindPopup(message)
+                .openPopup();
+            }
+            
+
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+            
+
+            
+        </script>
+
+      
+
+
+
+
 
         <% for(var i=0; i<reviews.length; i++) {%>
             
             <div class="card" style="width: 48rem;">
-                <h5 class="card-header"><%= reviews[i].username %></h5>
+                <h5 class="card-header"> <%= reviews[i].restaurant %>  <span class = "rating"> <small>(<%= reviews[i].rating %> stars)</small></span> </h5>
                 <div class="card-body">
                   
-                  <p class="card-text"><%= reviews[i].review %></p>
+                    <small class="card-text"> <span class = "timestamp"> <%= new Date(Number(reviews[i].time)) %> </span></small>
+                  <p class="card-text"> By: <b><%= reviews[i].username %></b> <br> <%= reviews[i].review %></p>
                   
                 </div>
             </div>
