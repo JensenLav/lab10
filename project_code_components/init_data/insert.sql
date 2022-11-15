@@ -1,3 +1,3 @@
 INSERT INTO reviews (username, review, rating) VALUES
-('asdfkjl', 'asdf fdjkjio  w sjhsbjsdeuyjmn', 4.3),
-('333ijj', 'dafeub ehhe jhf  djhk djhgakiyuwjnb  dhjdbai', 1.5);
+('aaa', 'The fried oreos slapped', 5),
+('yesman202', 'steak be bussin', 4);

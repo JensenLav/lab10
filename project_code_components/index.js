@@ -63,10 +63,19 @@ app.get ('/addResturant', (req, res) => {
 
 });
 
-app.get ('/postReview', (req, res) => {
+//postReview specifics down below
+app.get('/postReview', (req, res) => {
 
-  res.render ('pages/postReview');
+  res.render('pages/postReview',{});
+  
+});
 
+app.get('/viewRestaurant', (req, res) => {
+  res.render('pages/viewRestaurant',{});
+});
+
+app.get('/reviews', (req, res) => {
+  res.render('pages/reviews',{});
 });
 
 app.get('/AboutUs', (req, res) => {
@@ -150,16 +159,12 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 //post review
-app.get('/postReview', (req, res) => {
-  res.render('pages/postReview',{});
-});
-    
 app.post('/postReview', async (req, res) => {
   const query = "INSERT INTO reviews (rating,  review) VALUES ($1, $2);";
   db.any(query, [req.body.rating, hash])
   db.any(query, [req.body.review, hash])
       .then(function (data) {
-          res.redirect("/reviews"); //  currently not sending data to datafile ... 
+          res.redirect("/reviews"); //  should go to reviews when submit, currently not sending data to datafile ... 
       })
       .catch(function (error) {
           res.redirect("/postReview");   
