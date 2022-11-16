@@ -50,6 +50,71 @@ app.use(
 app.listen(3000);
 console.log('Server is listening on port 3000');
 
+const user = {
+  username: undefined,
+  email: undefined,
+  password: undefined,
+};
+
+let reviews = {
+  review_id: undefined,
+  review: undefined,
+  rating: undefined,
+};
+
+let restaurants = {
+  restaurant_id: undefined,
+  information: undefined,
+  avg_rating: undefined,
+};
+
+
+let users_reviews = `
+  SELECT
+    reviews.review_id,
+    reviews.review,
+    reviews.rating,
+    users.username = $1 AS "taken"
+  FROM
+    reviews
+    JOIN users_reviews ON reviews.review_id = users_reviews.review_id
+    JOIN users ON users_reviews.username = users.username
+  WHERE users.username = $1
+  ORDER BY reviews.review_id ASC;`;
+
+let restaurants_reviews = `
+SELECT
+  reviews.review_id,
+  reviews.review,
+  reviews.rating,
+  restaurants.restaurant_id = $1 AS "taken"
+FROM
+  reviews
+  JOIN restaurants_reviews ON reviews.review_id = restaurants_reviews.review_id
+  JOIN restaurants ON restaurants_reviews.restaurant_id = restaurants.restaurant_id
+WHERE restaurants.restaurant_id = $1
+ORDER BY reviews.review_id ASC;`;
+
+let all_restaurants = `
+SELECT
+  restaurants.restaurant_id,
+  restaurants.information,
+  restaurants.avg_rating,
+  CASE
+  WHEN
+  restaurants.restaurant_id IN (
+    SELECT restaurants_reviews.restaurant_id
+    FROM restaurants_reviews
+    WHERE restaurants_reviews.review_id = $1
+  ) THEN TRUE
+  ELSE FALSE
+  END
+  AS "taken"
+FROM
+  restaurants
+ORDER BY restaurants.restaurant_id ASC;
+`;
+
 //renders the home page
 app.get ('/home', (req, res) => {
 
@@ -57,21 +122,39 @@ app.get ('/home', (req, res) => {
 
 });
 
-app.get ('/addResturant', (req, res) => {
+app.get ('/addRestaurant', (req, res) => {
 
-  res.render ('pages/addResturant');
+  res.render ('pages/addRestaurant');
 
 });
 
 //postReview specifics down below
 app.get('/postReview', (req, res) => {
-
-  res.render('pages/postReview');
-  
+  res.render('pages/postReview', {
+    username: req.session.user.username,
+    restaurant_id: req.session.restaurants.restaurant_id,
+  });
 });
 
-app.get('/viewRestaurant', (req, res) => {
-  res.render('pages/viewRestaurant');
+//view all restaurants
+app.get('/viewRestaurants', (req, res) => {
+    const query = `SELECT * from restaurants ORDER BY avg_rating`; 
+    
+    db.any(query)
+      .then(function (rows) {
+        res.render('pages/viewRestaurants'); //, {
+          // restaurant_id: req.session.restaurants.restaurant_id,
+          // information: req.session.restaurants.information,
+          // avg_rating: req.session.restaurants.avg_rating
+        //});
+      })
+      .catch(function (err) {
+        res.redirect("pages/home", {
+          restaurants: [],
+          err: true,
+          message: err.message,
+        });
+      });
 });
 
 app.get('/reviews', (req, res) => {
@@ -83,7 +166,7 @@ app.get('/AboutUs', (req, res) => {
 });
 
 app.get('/', (req, res) =>{
-    res.redirect('/AboutUs'); //this will call the /anotherRoute route in the API
+    res.redirect('/home'); //this will call the /anotherRoute route in the API
 });
 
 app.get('/register', (req, res) => {
@@ -136,7 +219,7 @@ app.post('/login', async (req, res) => {
             api_key: process.env.API_KEY,
           };
           req.session.save();
-          res.redirect('/AboutUs')
+          res.redirect('/home')
         }
   
       })
@@ -160,17 +243,26 @@ app.use(auth);
 
 //post review
 app.post('/postReview', async (req, res) => {
-  let query = "INSERT INTO reviews(rating,  review) VALUES($1, $2);";
+  const review = req.body.review;
+  const rating = req.body.rating;
+  const review_id = req.body.review_id;
+  const query = "INSERT INTO reviews(rating, review_id, review) VALUES($1, $2, $3) returning * ;";
 
-  db.any(query, [req.body.rating, hash])
-  db.any(query, [req.body.review, hash])
-  
-      .then(()=> {
-        res.redirect('/reviews')
-      })
-      .catch(function (error) {
-          res.redirect("/postReview");   
-      });
+  db.any(query, [rating, review_id, review])
+
+  .then(function (data) {
+    res.redirect('pages/reviews', {
+      data: data,
+      message: `Successfully added review ${req.body.review_id}`,
+    })
+  })
+  .catch(function (err) {
+    res.redirect("pages/postReview", {
+      reviews: [],
+      err: true,
+      message: err.message,
+    });
+  });
 });
 
 app.get("/logout", (req, res) => {

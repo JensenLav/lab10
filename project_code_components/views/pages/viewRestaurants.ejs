@@ -44,7 +44,32 @@
         }
     </style>
 
-    
+    <div class="container">
+
+
+        <table class="table">
+        <tbody class="table-group-divider">
+            <tr>
+            <td>Restaurants</td>
+            <td><%= restaurant_id %></td>
+            </tr>
+            <tr>
+            <td>Information</td>
+            <td><%= information %></td>
+            </tr>
+            <tr>
+            <td>Average Rating</td>
+            <td><%= avg_rating %></td>
+            </tr>
+            <tr>
+            <td>Add Review</td>
+            <td><button type="nav-link" class="btn btn-primary btn-block mb-4" href="/postReview">Post Review</button></td>
+            </tr>
+        </tbody>
+        </table>
+
+    </div>
+
 </section>
 
 
