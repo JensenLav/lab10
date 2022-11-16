@@ -1,0 +1,17 @@
+Donen before meeting:
+Oscar - finished maps and backend
+Mansas - worked on login and register
+Albashir - took out about us page or thinks we should take it out
+Aria - restaurants page done, edited nav bar to accomodate view restaurants and reviews pages, worked on sql databases
+Jensen - worked on back-end to front-end of addRestaurant
+
+To-Do:
+Masas - finish login, register, and home page. Work on home fetching in real time reviews 
+Aria - test page functions and connection to database, integrate oscars backend
+Albashir - make more edits to landing page, finish abaout me paragraph on login and register pages
+Jensen - working on integration and branch merging
+Oscar - integration of branches to main, front end dev
+
+write user test cases
+update minutes 
+add release notes
