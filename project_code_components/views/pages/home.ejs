@@ -90,7 +90,7 @@
 
 
 <div id="carrousel" class="flex">
-    <div id="1">
+    <!-- <div id="1">
 
         <div class="col-lg-8">
             <h5 class="mb-3">Longhorn Steakhouse</h5>
@@ -166,7 +166,17 @@
               The food was not worth spending a penny over. Never going back!
             </p>
           </div>
-    </div>
+    </div> -->
+    <%
+    var addinput = "";
+    var index = 1;
+    data.forEach(function(item)
+    {
+        addinput += '<div id="' + index + '"><div class="col-lg-8"><h5 class="mb-3">' + item.username + '</h5><p>By ' + item.username + '</p><p class="text-muted"><i class="fas fa-quote-left pe-2"></i>' + item.review + '</p></div></div>';
+        index++;
+    });
+    %>
+    <%- addinput %>
   </div>
   
   <div class="pages">
