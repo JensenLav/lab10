@@ -94,7 +94,7 @@
         
             for(var i = 0; i < restaurants.length; i++){
 
-                let message = String('<b>' + restaurants[i].name + '</b>' + '<br>' + restaurants[i].address);
+                let message = String('<b>' + restaurants[i].name + '</b>' + ' ' + String(Math.round(restaurants[i].avg * 100) / 100) + '<br>' + restaurants[i].address);
                 L.marker([parseFloat(restaurants[i].lat), parseFloat(restaurants[i].long)], {icon: greenIcon}).addTo(map)
                 .bindPopup(message)
                 .openPopup();

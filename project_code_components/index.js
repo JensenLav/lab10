@@ -275,7 +275,7 @@ app.post('/postReview', async (req, res) => {
 
 app.get('/addRestaurants', (req, res) => {
 
-  db.any("SELECT * FROM RESTAURANTS")
+  db.any("SELECT * FROM RESTAURANTS join (select restaurant, AVG(rating) from reviews group by restaurant) as average_rating on Restaurants.name = average_rating.restaurant;")
     .then((restaurants) => {
       res.render("pages/addRestaurants", {
         restaurants,
