@@ -64,7 +64,19 @@ app.use(
 app.listen(3000);
 console.log('Server is listening on port 3000');
 
-
+app.get ('/home', (req, res) => {
+  const query = 'SELECT * FROM reviews LIMIT 7;';
+      db.any(query, [
+      ])
+      .then((data) => {
+        console.log(data);
+          res.render('pages/home',{data,});
+      })
+      .catch(function (err)  {
+          console.log(err);
+      });
+  
+    });
 
 //renders the home page
 app.get('/', (req, res) => {
