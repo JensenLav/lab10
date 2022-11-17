@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS restaurants (
     address VARCHAR(200),
     lat DECIMAL NOT NULL,
     long DECIMAL NOT NULL
-
 );
 
 CREATE TABLE IF NOT EXISTS reviews( 
