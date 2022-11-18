@@ -15,7 +15,7 @@ const NodeGeocoder = require('node-geocoder');
 
 const options = {
   provider: 'google',
-  apiKey: process.env.API_KEY
+  //apiKey: process.env.API_KEY
 };
 const geocoder = NodeGeocoder(options);
 
@@ -148,7 +148,7 @@ app.get('/viewRestaurants', (req, res) => {
     //       // avg_rating: req.session.restaurants.avg_rating
     //     //});
     //   })
-    db.any("SELECT * FROM RESTAURANTS ORDER BY avg_rating ASC")
+    db.any("SELECT * FROM RESTAURANTS ORDER BY name DESC")
     .then((restaurants) => {
       
       res.render("pages/viewRestaurants", {
@@ -166,24 +166,16 @@ app.get('/viewRestaurants', (req, res) => {
 
 app.post('/viewRestaurants', async (req, res) => {
 
-  const query = "SELECT name FROM RESTAURANTS WHERE name = $2"; // may need to modify
+  const query = "SELECT name FROM RESTAURANTS WHERE name = $1"; // may need to modify
   db.one(query, [req.body.name])
     .then(async function (sesh_restaurant) {
-      if (req.body.name) {
         req.session.sesh_restaurant = req.body.name;
         req.session.save();
         res.redirect("/postResReview"); 
-      } 
-      else {
-        res.render('pages/viewRestaurants', {
-          incorrect: true,
-          message: "Restaurant Does Not Exist.",
-        });
-      }
     })
     .catch(function (error) {
       if (error.message == 'No data returned from the query.') {
-        res.render('pages/viewRestaurants', { // uhhh
+        res.render('pages/viewRestaurants', { 
           incorrect: true,
           message: "Database Empty.",
         });

@@ -4,18 +4,18 @@
 <section class="background-radial-gradient overflow-hidden">
     <style>
         .background-radial-gradient {
-            background-color: hsl(218, 41%, 15%);
+            background-color: hsl(219, 41%, 83%);
             background-image: radial-gradient(650px circle at 0% 0%,
                 hsl(218, 41%, 35%) 15%,
-                hsl(218, 41%, 30%) 35%,
-                hsl(218, 41%, 20%) 75%,
-                hsl(218, 41%, 19%) 80%,
+                hsl(218, 69%, 75%) 35%,
+                hsl(219, 70%, 64%) 75%,
+                hsl(217, 12%, 46%) 80%,
                 transparent 100%),
             radial-gradient(1250px circle at 100% 100%,
                 hsl(218, 41%, 45%) 15%,
                 hsl(218, 41%, 30%) 35%,
-                hsl(218, 41%, 20%) 75%,
-                hsl(218, 41%, 19%) 80%,
+                hsl(220, 43%, 80%) 75%,
+                hsl(216, 23%, 58%) 80%,
                 transparent 100%);
         }
     
@@ -52,14 +52,14 @@
     <div id="datatable">
         <div class="container">
             <h1>Restaurant Pool:</h1>
-            <table class="table table-hover" href="#table">
+            <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">Restaurants</th>
                         <th scope="col">Information</th>
                         <th scope="col">Average Rating</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Add A Review:</th>
+                        <!-- <th scope="col">Add A Review:</th> -->
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
@@ -69,16 +69,14 @@
                                 <td><%= restaurants[i].information %></td>
                                 <td>(<%= restaurants[i].rating %> stars)</td>
                                 <td><%= restaurants[i].address %></td>
-                                <td><button type="submit" class="form-control" value="<%= name %>">Post Review</button></td>
+                                <!-- <td><button type="submit" class="form-control" value="<%= restaurants[i].name %>">Post Review</button></td>  -->
+                                <!-- href="/postResReview" -->
                             </tr>
                     <% } %>
                 </tbody>
             </table>
         </div>
     </div>
-    <div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
-        <h4 id="table">@table</h4>
-        <p>...</p>
 
 </section>
 
