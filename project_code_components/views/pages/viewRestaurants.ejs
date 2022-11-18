@@ -44,32 +44,37 @@
         }
     </style>
 
+    <div class="form-outline mb-4">
+        <input type="search" class="form-control" id="datatable-search-input">
+        <label class="form-label" for="datatable-search-input">Search</label>
+    </div>
 
-    <div class="container">
-        <h1>Restaurant Pool:</h1>
-        <!-- TABLE CONSTRUCTION -->
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Restaurants</th>
-                    <th scope="col">Information</th>
-                    <th scope="col">Average Rating</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Add A Review:</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                <% for(var i=0; i<restaurants.length; i++) {%>
-                        <tr>
-                            <td><%= restaurants[i].name %></td>
-                            <td><%= restaurants[i].information %></td>
-                            <td>(<%= restaurants[i].rating %> stars)</td>
-                            <td><%= restaurants[i].address %></td>
-                            <td><button type="submit" class="form-control" value="<%= name %>">Post Review</button></td>
-                        </tr>
-                <% } %>
-            </tbody>
-        </table>
+    <div id="datatable">
+        <div class="container">
+            <h1>Restaurant Pool:</h1>
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Restaurants</th>
+                        <th scope="col">Information</th>
+                        <th scope="col">Average Rating</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Add A Review:</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <% for(var i=0; i<restaurants.length; i++) {%>
+                            <tr>
+                                <td><%= restaurants[i].name %></td>
+                                <td><%= restaurants[i].information %></td>
+                                <td>(<%= restaurants[i].rating %> stars)</td>
+                                <td><%= restaurants[i].address %></td>
+                                <td><button type="submit" class="form-control" value="<%= name %>">Post Review</button></td>
+                            </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </section>

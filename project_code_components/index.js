@@ -166,7 +166,7 @@ app.get('/viewRestaurants', (req, res) => {
 
 app.post('/viewRestaurants', async (req, res) => {
 
-  const query = "SELECT name FROM RESTAURANTS WHERE name = $1"; // may need to modify
+  const query = "SELECT name FROM RESTAURANTS WHERE name = $2"; // may need to modify
   db.one(query, [req.body.name])
     .then(async function (sesh_restaurant) {
       if (req.body.name) {
