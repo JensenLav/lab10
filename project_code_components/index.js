@@ -251,7 +251,7 @@ app.post('/postReview', async (req, res) => {
 
   db.any("SELECT lat, long FROM restaurants where name = $1", [req.body.restaurant])
     .then(function (coordinates) {
-
+      
       let time = new Date().getTime();
       const query = "INSERT INTO reviews (username, review, rating, restaurant, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6, $7);";
 
