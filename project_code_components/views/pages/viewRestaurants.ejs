@@ -44,30 +44,32 @@
         }
     </style>
 
+
     <div class="container">
-
-
+        <h1>Restaurant Pool:</h1>
+        <!-- TABLE CONSTRUCTION -->
         <table class="table">
-        <tbody class="table-group-divider">
-            <tr>
-            <td>Restaurants</td>
-            <td><%= restaurant_id %></td>
-            </tr>
-            <tr>
-            <td>Information</td>
-            <td><%= information %></td>
-            </tr>
-            <tr>
-            <td>Average Rating</td>
-            <td><%= avg_rating %></td>
-            </tr>
-            <tr>
-            <td>Add Review</td>
-            <td><button type="nav-link" class="btn btn-primary btn-block mb-4" href="/postReview">Post Review</button></td>
-            </tr>
-        </tbody>
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Restaurants</th>
+                    <th scope="col">Information</th>
+                    <th scope="col">Average Rating</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Add A Review:</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% for(var i=0; i<restaurants.length; i++) {%>
+                        <tr>
+                            <td><%= restaurants[i].name %></td>
+                            <td><%= restaurants[i].information %></td>
+                            <td>(<%= restaurants[i].rating %> stars)</td>
+                            <td><%= restaurants[i].address %></td>
+                            <td><button type="submit" class="form-control" value="<%= name %>">Post Review</button></td>
+                        </tr>
+                <% } %>
+            </tbody>
         </table>
-
     </div>
 
 </section>

@@ -131,30 +131,106 @@ console.log('Server is listening on port 3000');
 
 //renders the home page
 app.get('/', (req, res) => {
-
+  
+  req.session.sesh_restaurant = '';
+  req.session.save();
   res.render('pages/login');
 
 });
 
 //view all restaurants
-app.get('/viewRestaurants', (req, res) => {
-    const query = `SELECT * from restaurants ORDER BY avg_rating`; 
-    
-    db.any(query)
-      .then(function (rows) {
-        res.render('pages/viewRestaurants'); //, {
-          // restaurant_id: req.session.restaurants.restaurant_id,
-          // information: req.session.restaurants.information,
-          // avg_rating: req.session.restaurants.avg_rating
-        //});
-      })
-      .catch(function (err) {
-        res.redirect("pages/home", {
-          restaurants: [],
-          err: true,
-          message: err.message,
-        });
+app.get('/viewRestaurants', (req, res) => {    
+    // db.any(query)
+    //   .then(function (rows) {
+    //     res.render('pages/viewRestaurants'); //, {
+    //       // restaurant_id: req.session.restaurants.restaurant_id,
+    //       // information: req.session.restaurants.information,
+    //       // avg_rating: req.session.restaurants.avg_rating
+    //     //});
+    //   })
+    db.any("SELECT * FROM RESTAURANTS ORDER BY avg_rating ASC")
+    .then((restaurants) => {
+      
+      res.render("pages/viewRestaurants", {
+        restaurants,
+        restaurants_json: JSON.stringify(restaurants),
       });
+    })
+    .catch((err) => {
+      res.send({
+        error: true,
+        message: err.message,
+      });
+    });
+});
+
+app.post('/viewRestaurants', async (req, res) => {
+
+  const query = "SELECT name FROM RESTAURANTS WHERE name = $1"; // may need to modify
+  db.one(query, [req.body.name])
+    .then(async function (sesh_restaurant) {
+      if (req.body.name) {
+        req.session.sesh_restaurant = req.body.name;
+        req.session.save();
+        res.redirect("/postResReview"); 
+      } 
+      else {
+        res.render('pages/viewRestaurants', {
+          incorrect: true,
+          message: "Restaurant Does Not Exist.",
+        });
+      }
+    })
+    .catch(function (error) {
+      if (error.message == 'No data returned from the query.') {
+        res.render('pages/viewRestaurants', { // uhhh
+          incorrect: true,
+          message: "Database Empty.",
+        });
+      } else {
+        console.log(error)
+        res.send(error);
+      }
+    });
+});
+
+app.get('/postResReview', (req, res) => {
+  res.render('pages/postResReview', {
+    username: req.session.user.username,
+    message: req.query.message, //idk what this is
+    sesh_restaurant: req.session.sesh_restaurant}); 
+});
+
+
+app.post('/postResReview', async (req, res) => {
+
+  db.any("SELECT lat, long FROM restaurants where name = $1", [req.body.restaurant])
+    .then(function (coordinates) {
+
+      let time = new Date().getTime();
+      const query = "INSERT INTO reviews (username, review, rating, restaurant, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6, $7);";
+
+      db.any(query, [req.session.user, req.body.review, req.body.rating, req.body.restaurant, coordinates[0].lat, coordinates[0].long, time])
+        .then(function (data) {
+
+          res.redirect("/viewRestaurants"); 
+        })
+        .catch(function (error) {
+          console.log(error);
+          res.send(error);
+          // res.redirect("/postResReview");   
+        });
+
+    }).catch(
+      // this should return if the restaurant name is not found.
+      function (error) {
+        const restaurant_not_found = querystring.stringify({
+          "message":"Restaurant not found"
+        });
+    
+        res.redirect("/postResReview?" + restaurant_not_found);
+      }
+    );
 });
 
 // app.get('/', (req, res) =>{
@@ -318,7 +394,6 @@ app.get('/reviews', (req, res) => {
 app.get('/postReview', (req, res) => {
   res.render('pages/postReview', {
     username: req.session.user.username,
-    restaurant_id: req.session.restaurants.restaurant_id,
     message: req.query.message});
 });
 
