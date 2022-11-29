@@ -64,70 +64,19 @@ app.use(
 app.listen(3000);
 console.log('Server is listening on port 3000');
 
-// const user = {
-//   username: undefined,
-//   email: undefined,
-//   password: undefined,
-// };
-
-// let reviews = {
-//   review_id: undefined,
-//   review: undefined,
-//   rating: undefined,
-// };
-
-// let restaurants = {
-//   restaurant_id: undefined,
-//   information: undefined,
-//   avg_rating: undefined,
-// };
-
-
-// let users_reviews = `
-//   SELECT
-//     reviews.review_id,
-//     reviews.review,
-//     reviews.rating,
-//     users.username = $1 AS "taken"
-//   FROM
-//     reviews
-//     JOIN users_reviews ON reviews.review_id = users_reviews.review_id
-//     JOIN users ON users_reviews.username = users.username
-//   WHERE users.username = $1
-//   ORDER BY reviews.review_id ASC;`;
-
-// let restaurants_reviews = `
-// SELECT
-//   reviews.review_id,
-//   reviews.review,
-//   reviews.rating,
-//   restaurants.restaurant_id = $1 AS "taken"
-// FROM
-//   reviews
-//   JOIN restaurants_reviews ON reviews.review_id = restaurants_reviews.review_id
-//   JOIN restaurants ON restaurants_reviews.restaurant_id = restaurants.restaurant_id
-// WHERE restaurants.restaurant_id = $1
-// ORDER BY reviews.review_id ASC;`;
-
-// let all_restaurants = `
-// SELECT
-//   restaurants.restaurant_id,
-//   restaurants.information,
-//   restaurants.avg_rating,
-//   CASE
-//   WHEN
-//   restaurants.restaurant_id IN (
-//     SELECT restaurants_reviews.restaurant_id
-//     FROM restaurants_reviews
-//     WHERE restaurants_reviews.review_id = $1
-//   ) THEN TRUE
-//   ELSE FALSE
-//   END
-//   AS "taken"
-// FROM
-//   restaurants
-// ORDER BY restaurants.restaurant_id ASC;
-// `;
+app.get ('/home', (req, res) => {
+  const query = 'SELECT * FROM reviews LIMIT 7;';
+      db.any(query, [
+      ])
+      .then((data) => {
+        console.log(data);
+          res.render('pages/home',{data,});
+      })
+      .catch(function (err)  {
+          console.log(err);
+      });
+  
+    });
 
 //renders the home page
 app.get('/', (req, res) => {
@@ -395,7 +344,7 @@ app.post('/postReview', async (req, res) => {
 
   db.any("SELECT lat, long FROM restaurants where name = $1", [req.body.restaurant])
     .then(function (coordinates) {
-
+      
       let time = new Date().getTime();
       const query = "INSERT INTO reviews (username, review, rating, restaurant, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6, $7);";
 
