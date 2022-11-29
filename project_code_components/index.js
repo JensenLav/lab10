@@ -138,6 +138,7 @@ app.get('/', (req, res) => {
 
 });
 
+
 //view all restaurants
 app.get('/viewRestaurants', (req, res) => {    
     // db.any(query)
@@ -165,7 +166,7 @@ app.get('/viewRestaurants', (req, res) => {
 });
 
 app.post('/viewRestaurants', async (req, res) => {
-
+  
   const query = "SELECT name FROM RESTAURANTS WHERE name = $1"; // may need to modify
   db.one(query, [req.body.name])
     .then(async function (sesh_restaurant) {
