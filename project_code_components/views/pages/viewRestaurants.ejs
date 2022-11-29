@@ -1,0 +1,185 @@
+<%- include ('../partials/header') %>
+<%- include('../partials/header-navbar')%>
+
+<section class="background-radial-gradient overflow-hidden">
+    <style>
+        .background-radial-gradient {
+            background-color: hsl(218, 41%, 19%);
+            background-image: radial-gradient(650px circle at 0% 0%,
+                hsl(218, 41%, 35%) 15%,
+                hsl(218, 40%, 45%) 35%,
+                hsl(218, 43%, 42%) 80%,
+                hsl(218, 43%, 39%) 80%,
+                transparent 100%),
+            radial-gradient(1250px circle at 100% 100%,
+                hsl(218, 41%, 45%) 15%,
+                hsl(218, 44%, 42%) 35%,
+                hsl(219, 44%, 42%) 75%,
+                hsl(218, 43%, 45%) 80%,
+                transparent 100%);
+        }
+    
+        #radius-shape-1 {
+            height: 220px;
+            width: 220px;
+            top: -60px;
+            left: -130px;
+            background: radial-gradient(#44006b, #ad1fff);
+            overflow: hidden;
+        }
+    
+        #radius-shape-2 {
+            border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+            bottom: -60px;
+            right: -110px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(#44006b, #ad1fff);
+            overflow: hidden;
+        }
+    
+        .bg-glass {
+            background-color: hsla(0, 0%, 100%, 0.9) !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
+        .search-box {
+            position: relative;
+            float: right;
+        }
+        * {
+        box-sizing: border-box;
+        }
+
+        #myInput {
+        background-image: url('/css/searchicon.png');
+        background-position: 10px 10px;
+        background-repeat: no-repeat;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 20px 12px 40px;
+        border: 1px solid #ddd;
+        margin-bottom: 12px;
+        }
+
+        #myTable {
+        border-collapse: collapse;
+        width: 100%;
+        border: 1px solid #ddd;
+        font-size: 18px;
+        }
+
+        #myTable th, #myTable td {
+        text-align: left;
+        padding: 12px;
+        }
+
+        #myTable tr {
+        border-bottom: 1px solid #ddd;
+        }
+
+        #myTable tr.header, #myTable tr:hover {
+        background-color: #f1f1f1;
+        }
+
+        table.dataTable thead .sorting:after,
+        table.dataTable thead .sorting:before,
+        table.dataTable thead .sorting_asc:after,
+        table.dataTable thead .sorting_asc:before,
+        table.dataTable thead .sorting_asc_disabled:after,
+        table.dataTable thead .sorting_asc_disabled:before,
+        table.dataTable thead .sorting_desc:after,
+        table.dataTable thead .sorting_desc:before,
+        table.dataTable thead .sorting_desc_disabled:after,
+        table.dataTable thead .sorting_desc_disabled:before {
+        bottom: .5em;
+        }
+
+    </style>
+
+    <script>
+        // table scroll feature not sure where in this get I should put it
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                "scrollY": "200px",
+                "scrollCollapse": true,
+                "searching": true,
+            });
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+<!-- if I were to do it myself -->
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+    </script>
+
+    <div class = "container px-4">
+
+        <!-- <div class = "container"> -->
+        <div class = "table-wrapper table-responsive">
+
+            <h1 class="mb-3"></h1>
+            <!-- Table  -->
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2><b>Restaurants:</b></h2></div>
+                    <div class="col-sm-4">
+                        <div class="search-box">
+                            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Restaurants.." title="Type in a Restaurant">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <table id="myTable" class="table table-hover mb-0" cellspacing="0" width="100%">
+                <!-- Table Head -->
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Restaurants</th>
+                        <th scope="col">Information</th>
+                        <th scope="col">Average Rating</th>
+                        <th scope="col">Address</th>
+                        <!-- <th scope="col">Add A Review:</th> -->
+                    </tr>
+                </thead>
+                <!-- Table Head -->
+
+                <!--Table body-->
+                <tbody>
+                    <% for(var i=0; i<restaurants.length; i++) {%>
+                            <tr>
+                                <th><%= restaurants[i].name %></th>
+                                <td><%= restaurants[i].information %></td>
+                                <td>(<%= restaurants[i].res_rating %> stars)</td>
+                                <td><%= restaurants[i].address %></td>
+                                <!-- <td><button type="submit" class="btn btn-indigo btn-sm m-0" value="<%= restaurants[i].name %>">Post Review</button></td>  -->
+                                <!-- href="/postResReview" -->
+                            </tr>
+                    <% } %>
+                </tbody>
+                <!--Table body-->
+            </table>
+            <!-- Table -->
+        </div>
+    </div>
+
+</section>
+
+
+<%- include('../partials/footer')%>

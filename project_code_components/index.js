@@ -15,7 +15,7 @@ const NodeGeocoder = require('node-geocoder');
 
 const options = {
   provider: 'google',
-  apiKey: process.env.API_KEY
+  //apiKey: process.env.API_KEY
 };
 const geocoder = NodeGeocoder(options);
 
@@ -80,11 +80,100 @@ app.get ('/home', (req, res) => {
 
 //renders the home page
 app.get('/', (req, res) => {
-
+  
+  req.session.sesh_restaurant = '';
+  req.session.save();
   res.render('pages/login');
 
 });
 
+
+//view all restaurants
+app.get('/viewRestaurants', (req, res) => {    
+    // db.any(query)
+    //   .then(function (rows) {
+    //     res.render('pages/viewRestaurants'); //, {
+    //       // restaurant_id: req.session.restaurants.restaurant_id,
+    //       // information: req.session.restaurants.information,
+    //       // avg_rating: req.session.restaurants.avg_rating
+    //     //});
+    //   })
+    db.any("SELECT * FROM RESTAURANTS ORDER BY name DESC")
+    .then((restaurants) => {
+      
+      res.render("pages/viewRestaurants", {
+        restaurants,
+        restaurants_json: JSON.stringify(restaurants),
+      });
+    })
+    .catch((err) => {
+      res.send({
+        error: true,
+        message: err.message,
+      });
+    });
+});
+
+app.post('/viewRestaurants', async (req, res) => {
+  
+  const query = "SELECT name FROM RESTAURANTS WHERE name = $1"; // may need to modify
+  db.one(query, [req.body.name])
+    .then(async function (sesh_restaurant) {
+        req.session.sesh_restaurant = req.body.name;
+        req.session.save();
+        res.redirect("/postResReview"); 
+    })
+    .catch(function (error) {
+      if (error.message == 'No data returned from the query.') {
+        res.render('pages/viewRestaurants', { 
+          incorrect: true,
+          message: "Database Empty.",
+        });
+      } else {
+        console.log(error)
+        res.send(error);
+      }
+    });
+});
+
+app.get('/postResReview', (req, res) => {
+  res.render('pages/postResReview', {
+    username: req.session.user.username,
+    message: req.query.message, //idk what this is
+    sesh_restaurant: req.session.sesh_restaurant}); 
+});
+
+
+app.post('/postResReview', async (req, res) => {
+
+  db.any("SELECT lat, long FROM restaurants where name = $1", [req.body.restaurant])
+    .then(function (coordinates) {
+
+      let time = new Date().getTime();
+      const query = "INSERT INTO reviews (username, review, rating, restaurant, lat, long, time) VALUES ($1, $2, $3, $4, $5, $6, $7);";
+
+      db.any(query, [req.session.user, req.body.review, req.body.rating, req.body.restaurant, coordinates[0].lat, coordinates[0].long, time])
+        .then(function (data) {
+
+          res.redirect("/viewRestaurants"); 
+        })
+        .catch(function (error) {
+          console.log(error);
+          res.send(error);
+          // res.redirect("/postResReview");   
+        });
+
+    }).catch(
+      // this should return if the restaurant name is not found.
+      function (error) {
+        const restaurant_not_found = querystring.stringify({
+          "message":"Restaurant not found"
+        });
+    
+        res.redirect("/postResReview?" + restaurant_not_found);
+      }
+    );
+});
 
 // app.get('/', (req, res) =>{
 //     res.redirect('/AboutUs'); //this will call the /anotherRoute route in the API
@@ -123,14 +212,7 @@ app.post('/register', async (req, res) => {
       // res.redirect("/register");
 
     });
-
-
 });
-
-
-
-
-
 
 app.get('/login', (req, res) => {
   res.render('pages/login.ejs', {});
@@ -186,19 +268,38 @@ app.post('/login', (req, res) => {
 });
 
 const auth = (req, res, next) => {
-    if (!req.session.user) {
-      // Default to register page.
-      return res.redirect('/reviews');
-    }
-    next();
+  if (!req.session.user) {
+  // Default to register page.
+    return res.redirect('/reviews');
+  }
+  next();
 };
-    
-    // Authentication Required
+
+// Authentication Required
 app.use(auth);
 
+//post review
+// app.post('/postReview', async (req, res) => {
+//   const review = req.body.review;
+//   const rating = req.body.rating;
+//   const review_id = req.body.review_id;
+//   const query = "INSERT INTO reviews(rating, review_id, review) VALUES($1, $2, $3) returning * ;";
 
+//   db.any(query, [rating, review_id, review])
 
-
+//   .then(function (data) {
+//     res.redirect('pages/reviews', {
+//       data: data,
+//       message: `Successfully added review ${req.body.review_id}`,
+//     })
+//   })
+//   .catch(function (err) {
+//     res.redirect("pages/postReview", {
+//       reviews: [],
+//       err: true,
+//       message: err.message,
+//     });
+//   });
 
 // const auth = (req, res, next) => {
 //       if (!req.session.user) {
@@ -210,17 +311,6 @@ app.use(auth);
 //     
 //     // Authentication Required
 //     app.use(auth);
-
-
-// added recently ---------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
 
 
 app.get('/reviews', (req, res) => {
@@ -244,8 +334,11 @@ app.get('/reviews', (req, res) => {
 
 
 app.get('/postReview', (req, res) => {
-  res.render('pages/postReview', {message: req.query.message});
+  res.render('pages/postReview', {
+    username: req.session.user.username,
+    message: req.query.message});
 });
+
 
 app.post('/postReview', async (req, res) => {
 
@@ -279,10 +372,6 @@ app.post('/postReview', async (req, res) => {
 
 
 });
-
-
-
-
 
 
 app.get('/addRestaurants', (req, res) => {
@@ -331,8 +420,6 @@ app.post('/addRestaurants', async (req, res) => {
     res.redirect("/addRestaurants?" + address_not_found);
     // this should redirect with error message
   }
-
-
 });
 
 
