@@ -83,7 +83,7 @@ app.get('/', (req, res) => {
   
   req.session.sesh_restaurant = '';
   req.session.save();
-  res.render('pages/login');
+  res.render('pages/LandingPage');
 
 });
 
@@ -428,6 +428,6 @@ app.post('/addRestaurants', async (req, res) => {
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  res.render("pages/login");
+  res.render("pages/LandingPage");
 });
 
