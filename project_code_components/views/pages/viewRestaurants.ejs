@@ -6,16 +6,16 @@
         .background-radial-gradient {
             background-color: hsl(218, 41%, 19%);
             background-image: radial-gradient(650px circle at 0% 0%,
-                hsl(218, 41%, 35%) 15%,
-                hsl(218, 40%, 45%) 35%,
-                hsl(218, 43%, 42%) 80%,
-                hsl(218, 43%, 39%) 80%,
+                hsl(219, 40%, 49%) 15%,
+                hsl(218, 50%, 56%) 35%,
+                hsl(218, 44%, 51%) 80%,
+                hsl(218, 42%, 48%) 80%,
                 transparent 100%),
             radial-gradient(1250px circle at 100% 100%,
-                hsl(218, 41%, 45%) 15%,
-                hsl(218, 44%, 42%) 35%,
-                hsl(219, 44%, 42%) 75%,
-                hsl(218, 43%, 45%) 80%,
+                hsl(218, 50%, 55%) 15%,
+                hsl(218, 45%, 50%) 35%,
+                hsl(219, 47%, 52%) 75%,
+                hsl(218, 49%, 53%) 80%,
                 transparent 100%);
         }
     
@@ -77,7 +77,12 @@
         border-bottom: 1px solid #ddd;
         }
 
-        #myTable tr.header, #myTable tr:hover {
+        #Head {
+            background-color: hsl(218, 41%, 19%);
+            color: #f1f1f1;
+        }
+
+        #Body tr:hover {
         background-color: #f1f1f1;
         }
 
@@ -149,7 +154,7 @@
             
             <table id="myTable" class="table table-hover mb-0" cellspacing="0" width="100%">
                 <!-- Table Head -->
-                <thead class="thead-dark">
+                <thead class="thead-dark" id="Head">
                     <tr>
                         <th scope="col">Restaurants</th>
                         <th scope="col">Information</th>
@@ -161,7 +166,7 @@
                 <!-- Table Head -->
 
                 <!--Table body-->
-                <tbody>
+                <tbody id="Body">
                     <% for(var i=0; i<restaurants.length; i++) {%>
                             <tr>
                                 <th><%= restaurants[i].name %></th>
