@@ -87,6 +87,10 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/LandingPage', (req, res) => {
+  res.render('pages/LandingPage', {});
+});
+
 
 //view all restaurants
 app.get('/viewRestaurants', (req, res) => {    
@@ -178,11 +182,6 @@ app.post('/postResReview', async (req, res) => {
 // app.get('/', (req, res) =>{
 //     res.redirect('/AboutUs'); //this will call the /anotherRoute route in the API
 // });
-
-app.get('/AboutUs', (req, res) => {
-  res.render('pages/AboutUs', {});
-});
-
 
 app.get('/register', (req, res) => {
   res.render('pages/register', {});
