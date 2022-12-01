@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS restaurants (
     name VARCHAR(50),
     information VARCHAR(200),
-    res_rating DECIMAL NOT NULL,
     address VARCHAR(200),
     lat DECIMAL NOT NULL,
     long DECIMAL NOT NULL

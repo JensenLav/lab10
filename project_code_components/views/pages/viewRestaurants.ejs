@@ -4,20 +4,21 @@
 <section class="background-radial-gradient overflow-hidden">
     <style>
         .background-radial-gradient {
-            background-color: hsl(218, 41%, 19%);
+            background-color: hsl(218, 41%, 15%);
             background-image: radial-gradient(650px circle at 0% 0%,
-                hsl(219, 40%, 49%) 15%,
-                hsl(218, 50%, 56%) 35%,
-                hsl(218, 44%, 51%) 80%,
-                hsl(218, 42%, 48%) 80%,
+                hsl(218, 41%, 35%) 15%,
+                hsl(218, 41%, 30%) 35%,
+                hsl(218, 41%, 20%) 75%,
+                hsl(218, 41%, 19%) 80%,
                 transparent 100%),
             radial-gradient(1250px circle at 100% 100%,
-                hsl(218, 50%, 55%) 15%,
-                hsl(218, 45%, 50%) 35%,
-                hsl(219, 47%, 52%) 75%,
-                hsl(218, 49%, 53%) 80%,
+                hsl(218, 41%, 45%) 15%,
+                hsl(218, 41%, 30%) 35%,
+                hsl(218, 41%, 20%) 75%,
+                hsl(218, 41%, 19%) 80%,
                 transparent 100%);
         }
+    
     
         #radius-shape-1 {
             height: 220px;
@@ -42,6 +43,9 @@
             background-color: hsla(0, 0%, 100%, 0.9) !important;
             backdrop-filter: saturate(200%) blur(25px);
         }
+
+        #title{ color: #fff;}
+        
         .search-box {
             position: relative;
             float: right;
@@ -66,6 +70,8 @@
         width: 100%;
         border: 1px solid #ddd;
         font-size: 18px;
+        color: #fff;
+        
         }
 
         #myTable th, #myTable td {
@@ -75,15 +81,18 @@
 
         #myTable tr {
         border-bottom: 1px solid #ddd;
+        color: #fff;
         }
 
         #Head {
-            background-color: hsl(218, 41%, 19%);
+            background-color: hsl(240, 7%, 11%);
             color: #f1f1f1;
+            color: #fff;
         }
 
         #Body tr:hover {
         background-color: #f1f1f1;
+        color: #fff;
         }
 
         table.dataTable thead .sorting:after,
@@ -143,7 +152,7 @@
             <!-- Table  -->
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2><b>Restaurants:</b></h2></div>
+                    <div class="col-sm-8" id = "title"><h2><b>Restaurants:</b></h2></div>
                     <div class="col-sm-4">
                         <div class="search-box">
                             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Restaurants.." title="Type in a Restaurant">
@@ -171,7 +180,7 @@
                             <tr>
                                 <th><%= restaurants[i].name %></th>
                                 <td><%= restaurants[i].information %></td>
-                                <td>(<%= restaurants[i].res_rating %> stars)</td>
+                                <td>(<%= String(Math.round(restaurants[i].avg * 100) / 100) %> stars)</td>
                                 <td><%= restaurants[i].address %></td>
                                 <!-- <td><button type="submit" class="btn btn-indigo btn-sm m-0" value="<%= restaurants[i].name %>">Post Review</button></td>  -->
                                 <!-- href="/postResReview" -->

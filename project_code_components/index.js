@@ -15,7 +15,7 @@ const NodeGeocoder = require('node-geocoder');
 
 const options = {
   provider: 'google',
-  //apiKey: process.env.API_KEY
+  apiKey: process.env.API_KEY
 };
 const geocoder = NodeGeocoder(options);
 
@@ -23,6 +23,7 @@ const geocoder = NodeGeocoder(options);
 const dbConfig = {
   host: 'db',
   port: 5432,
+
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
@@ -98,12 +99,13 @@ app.get('/viewRestaurants', (req, res) => {
     //       // avg_rating: req.session.restaurants.avg_rating
     //     //});
     //   })
-    db.any("SELECT * FROM RESTAURANTS ORDER BY name DESC")
+    
+  db.any("SELECT * FROM RESTAURANTS left join (select restaurant, AVG(rating) from reviews group by restaurant) as average_rating on Restaurants.name = average_rating.restaurant order by name desc;")
     .then((restaurants) => {
-      
       res.render("pages/viewRestaurants", {
         restaurants,
-        restaurants_json: JSON.stringify(restaurants),
+        json: JSON.stringify(restaurants),
+        message: req.query.message
       });
     })
     .catch((err) => {
@@ -397,7 +399,6 @@ app.get('/addRestaurants', (req, res) => {
 app.post('/addRestaurants', async (req, res) => {
   // console.log(process.env.API_KEY);
   const geocode_info = await geocoder.geocode(req.body.address);
-
 
   try {
     const query = "INSERT INTO restaurants (name, address, lat, long) VALUES ($1, $2, $3, $4);";
